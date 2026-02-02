@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-main: 'Outfit', sans-serif;
+  --bg-primary: #FEFEFA;
+  /* Warm Ivory */
+  --bg-secondary: #F9F7F2;
+  --text-primary: #2C3E50;
+  /* High contrast navy */
+  --text-secondary: #5D6D7E;
+  --primary-color: #D35400;
+  /* Warm Terracotta */
+  --secondary-color: #27AE60;
+  /* Sage Green */
+  --accent-color: #F39C12;
+  /* Honey Yellow */
+  --accent-pink: #FDF2F8;
+  --accent-blue: #EFF6FF;
+  --accent-purple: #F5F3FF;
+  --border-radius-lg: 32px;
+  /* Smoother, friendly corners */
+  --border-radius-md: 20px;
+  --border-radius-sm: 12px;
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 15px 50px rgba(0, 0, 0, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.8;
+  /* More spacing for easier reading */
+  font-size: 18px;
+  /* Larger base font */
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transition);
+}
+
+.container {
+  max-width: 1300px;
+  /* Slightly wider */
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(254, 254, 250, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(211, 84, 0, 0.1);
+}
+
+/* Base Components */
+.btn {
+  padding: 16px 32px;
+  /* Larger hit area */
+  border-radius: var(--border-radius-md);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #BA4A00;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(211, 84, 0, 0.4);
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 60px 0;
+  }
+}
