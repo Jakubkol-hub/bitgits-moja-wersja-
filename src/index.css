@@ -105,8 +105,36 @@ button {
   padding: 80px 0;
 }
 
+.product-page-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
 @media (max-width: 768px) {
+  .product-page-grid {
+    grid-template-columns: 1fr;
+    /* Stack on mobile */
+    gap: 40px !important;
+  }
+
   .section-padding {
     padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  h1 {
+    font-size: 2.5rem !important;
+    /* Force smaller title on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 14px 24px;
+    font-size: 16px;
+    width: 100%;
+    /* Full width buttons on mobile */
   }
 }

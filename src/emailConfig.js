@@ -5,7 +5,7 @@ export const EMAIL_CONFIG = {
     //    W treści szablonu użyj zmiennych: {{to_name}} i {{reset_code}}
     // 3. W Account > API Keys -> skopiuj Public Key
 
-    SERVICE_ID: "YOUR_SERVICE_ID", // np. 'service_8x9s...'
-    TEMPLATE_ID: "YOUR_TEMPLATE_ID", // np. 'template_3v2...'
-    PUBLIC_KEY: "YOUR_PUBLIC_KEY",   // np. 'O7t_mC...'
+    SERVICE_ID: "service_nbzsk6w", // np. 'service_8x9s...'
+    TEMPLATE_ID: "template_gpjiwfb", // np. 'template_3v2...'
+    PUBLIC_KEY: "8raYEv7oogDFFF-ru",   // np. 'O7t_mC...'
 };

@@ -32,7 +32,7 @@ const ProductPage = ({ products, onAddToCart }) => {
                 <ArrowLeft size={20} /> Powrót
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '60px' }}>
+            <div className="product-page-grid" style={{ display: 'grid', gap: '60px' }}>
                 {/* Image Gallery */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <motion.div

@@ -18,6 +18,7 @@ import MetodyPlatnosci from './pages/MetodyPlatnosci';
 import ZwrotyIWymiany from './pages/ZwrotyIWymiany';
 import ProductPage from './pages/ProductPage';
 import { motion } from 'framer-motion';
+import { DB } from './services/db';
 
 const App = () => {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -60,12 +61,15 @@ const App = () => {
     }
   ]);
 
+
+
   useEffect(() => {
-    const savedProducts = localStorage.getItem('bitgits_products');
-    if (savedProducts) {
-      const parsed = JSON.parse(savedProducts);
-      if (parsed.length > 0) setProducts(parsed);
-    }
+    // Load products from DB (Firebase or Local)
+    const loadData = async () => {
+      const dbProducts = await DB.getProducts();
+      setProducts(dbProducts);
+    };
+    loadData();
 
     const savedOrders = localStorage.getItem('bitgits_orders');
     if (savedOrders) {
@@ -96,22 +100,33 @@ const App = () => {
     setPrimaryColor(newColor);
   };
 
-  const handleAddProduct = (newProduct) => {
-    const updated = [...products, newProduct];
-    setProducts(updated);
-    localStorage.setItem('bitgits_products', JSON.stringify(updated));
+  const handleAddProduct = async (newProduct) => {
+    // Optimistic update
+    setProducts(prev => [...prev, { ...newProduct, id: 'temp-' + Date.now() }]);
+
+    try {
+      const added = await DB.addProduct(newProduct);
+      // Replace temp with real
+      setProducts(prev => prev.map(p => p.id.toString().startsWith('temp-') ? added : p));
+
+      // If we are falling back to local storage inside DB service, we might need to reload or trust return
+      // DB.addProduct returns the object with ID.
+    } catch (error) {
+      console.error("Failed to add product", error);
+      // Rollback? simplified for now
+      const dbProducts = await DB.getProducts();
+      setProducts(dbProducts);
+    }
   };
 
-  const handleUpdateProduct = (updatedProduct) => {
-    const updated = products.map(p => p.id === updatedProduct.id ? updatedProduct : p);
-    setProducts(updated);
-    localStorage.setItem('bitgits_products', JSON.stringify(updated));
+  const handleUpdateProduct = async (updatedProduct) => {
+    setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+    await DB.updateProduct(updatedProduct);
   };
 
-  const handleDeleteProduct = (id) => {
-    const updated = products.filter(p => p.id !== id);
-    setProducts(updated);
-    localStorage.setItem('bitgits_products', JSON.stringify(updated));
+  const handleDeleteProduct = async (id) => {
+    setProducts(prev => prev.filter(p => p.id !== id));
+    await DB.deleteProduct(id);
   };
 
   const handleOpenEdit = (product) => {
