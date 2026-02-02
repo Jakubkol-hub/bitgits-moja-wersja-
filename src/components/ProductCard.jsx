@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, ChevronLeft, ChevronRight, Tag, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product, onEdit, isAdmin, onAddToCart }) => {
+    const navigate = useNavigate();
+
     const [currentImg, setCurrentImg] = useState(0);
     const images = product.images && product.images.length > 0 ? product.images : ['https://via.placeholder.com/400'];
 
@@ -23,6 +26,7 @@ const ProductCard = ({ product, onEdit, isAdmin, onAddToCart }) => {
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -12 }}
             transition={{ duration: 0.4 }}
+            onClick={() => navigate(`/produkt/${product.id}`)} // Navigate on click
             style={{
                 background: '#fff',
                 borderRadius: 'var(--border-radius-lg)',
@@ -145,6 +149,10 @@ const ProductCard = ({ product, onEdit, isAdmin, onAddToCart }) => {
                         </button>
                         <button
                             className="btn-primary"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/produkt/${product.id}`);
+                            }}
                             style={{
                                 borderRadius: '14px',
                                 padding: '0 20px',

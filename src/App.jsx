@@ -16,6 +16,7 @@ import Kontakt from './pages/Kontakt';
 import Dostawa from './pages/Dostawa';
 import MetodyPlatnosci from './pages/MetodyPlatnosci';
 import ZwrotyIWymiany from './pages/ZwrotyIWymiany';
+import ProductPage from './pages/ProductPage';
 import { motion } from 'framer-motion';
 
 const App = () => {
@@ -206,6 +207,7 @@ const App = () => {
         <Route path="/prezenty" element={<PagePlaceholder title="Prezenty" />} />
         <Route path="/blog" element={<PagePlaceholder title="Nasz Blog" />} />
         <Route path="/oferta/:categoryPath" element={<CategoryView />} />
+        <Route path="/produkt/:id" element={<ProductPage products={products} onAddToCart={addToCart} />} />
       </Routes>
 
       <AdminPanel
