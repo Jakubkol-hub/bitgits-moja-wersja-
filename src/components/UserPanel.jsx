@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { X, LogIn, User, ShoppingBag, Settings, LogOut, Mail, Lock, Key, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import emailjs from '@emailjs/browser';
+import { EMAIL_CONFIG } from '../emailConfig';
+
 const UserPanel = ({ isOpen, onClose, onLogin, user }) => {
-    const [view, setView] = useState('login'); // login, register, forgot, reset
+    const [view, setView] = useState('login');
     const [formData, setFormData] = useState({ email: '', password: '', confirmPassword: '', name: '' });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [resetCode, setResetCode] = useState('');
+    const [resetCode, setResetCode] = useState(''); // Stores the real code
     const [inputCode, setInputCode] = useState('');
+    const [isSending, setIsSending] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
@@ -68,26 +72,56 @@ const UserPanel = ({ isOpen, onClose, onLogin, user }) => {
     };
 
     const handleGoogleLogin = () => {
-        // Simulated Google Login
         onLogin({ email: 'google-user@gmail.com', name: 'Użytkownik Google', type: 'google' });
         onClose();
     };
 
     const handleForgotInit = (e) => {
         e.preventDefault();
+        setError('');
+
         const users = getUsers();
-        if (!users.find(u => u.email === formData.email)) {
+        const userFound = users.find(u => u.email === formData.email);
+
+        if (!userFound) {
             setError('Nie znaleziono konta o podanym adresie e-mail.');
             return;
         }
-        // Simulate sending code
-        setSuccess(`Kod resetujący został wysłany na ${formData.email} (Kod: 1234)`);
-        setView('reset');
+
+        if (EMAIL_CONFIG.SERVICE_ID === "YOUR_SERVICE_ID") {
+            // Fallback for demo purposes if not configured
+            const mockCode = '1234';
+            setResetCode(mockCode);
+            setSuccess(`[DEMO] EmailJS nie skonfigurowane. Kod: ${mockCode}`);
+            setView('reset');
+            return;
+        }
+
+        setIsSending(true);
+        const generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+        const templateParams = {
+            to_email: formData.email,
+            to_name: userFound.name,
+            reset_code: generatedCode,
+        };
+
+        emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, templateParams, EMAIL_CONFIG.PUBLIC_KEY)
+            .then((validResponse) => {
+                setResetCode(generatedCode);
+                setSuccess(`Kod weryfikacyjny został wysłany na ${formData.email}`);
+                setView('reset');
+                setIsSending(false);
+            }, (error) => {
+                console.error('FAILED...', error);
+                setError('Wystąpił błąd przy wysyłaniu e-maila. Spróbuj ponownie później.');
+                setIsSending(false);
+            });
     };
 
     const handleResetPassword = (e) => {
         e.preventDefault();
-        if (inputCode !== '1234') {
+        if (inputCode !== resetCode) {
             setError('Nieprawidłowy kod weryfikacyjny.');
             return;
         }
