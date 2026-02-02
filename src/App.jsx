@@ -132,8 +132,39 @@ const App = () => {
         onEdit={handleOpenEdit}
         selectedCategory={formatCategoryName(categoryPath)}
         isAdmin={isAdminLoggedIn}
+        onAddToCart={addToCart}
       />
     );
+  };
+
+  const [cartItems, setCartItems] = useState([]);
+
+  // Load cart when user changes
+  useEffect(() => {
+    if (loggedInUser) {
+      const savedCart = localStorage.getItem(`bitgits_cart_${loggedInUser.email}`);
+      setCartItems(savedCart ? JSON.parse(savedCart) : []);
+    } else {
+      setCartItems([]);
+    }
+  }, [loggedInUser]);
+
+  const addToCart = (product) => {
+    if (!loggedInUser) {
+      setIsUserOpen(true); // Open login if not logged in
+      return;
+    }
+    const updatedCart = [...cartItems, { ...product, cartId: Date.now() }];
+    setCartItems(updatedCart);
+    localStorage.setItem(`bitgits_cart_${loggedInUser.email}`, JSON.stringify(updatedCart));
+    setIsCartOpen(true); // Open cart to show added item
+  };
+
+  const removeFromCart = (cartId) => {
+    if (!loggedInUser) return;
+    const updatedCart = cartItems.filter(item => item.cartId !== cartId);
+    setCartItems(updatedCart);
+    localStorage.setItem(`bitgits_cart_${loggedInUser.email}`, JSON.stringify(updatedCart));
   };
 
   const PagePlaceholder = ({ title }) => (
@@ -160,6 +191,7 @@ const App = () => {
               products={products}
               onEdit={handleOpenEdit}
               isAdmin={isAdminLoggedIn}
+              onAddToCart={addToCart}
             />
           </>
         } />
@@ -170,7 +202,7 @@ const App = () => {
         <Route path="/dostawa" element={<Dostawa />} />
         <Route path="/metody-platnosci" element={<MetodyPlatnosci />} />
         <Route path="/zwroty-i-wymiany" element={<ZwrotyIWymiany />} />
-        <Route path="/oferta" element={<ProductGrid products={products} onEdit={handleOpenEdit} isAdmin={isAdminLoggedIn} />} />
+        <Route path="/oferta" element={<ProductGrid products={products} onEdit={handleOpenEdit} isAdmin={isAdminLoggedIn} onAddToCart={addToCart} />} />
         <Route path="/prezenty" element={<PagePlaceholder title="Prezenty" />} />
         <Route path="/blog" element={<PagePlaceholder title="Nasz Blog" />} />
         <Route path="/oferta/:categoryPath" element={<CategoryView />} />
@@ -209,6 +241,9 @@ const App = () => {
       <CartPanel
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onRemove={removeFromCart}
+        total={cartItems.reduce((acc, item) => acc + (parseFloat(item.price) || 0), 0)}
       />
 
       <SearchOverlay

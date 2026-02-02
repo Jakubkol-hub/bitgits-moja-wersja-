@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight, Tag, ShoppingCart } from 'lucide-react';
 
-const ProductCard = ({ product, onEdit, isAdmin }) => {
+const ProductCard = ({ product, onEdit, isAdmin, onAddToCart }) => {
     const [currentImg, setCurrentImg] = useState(0);
     const images = product.images && product.images.length > 0 ? product.images : ['https://via.placeholder.com/400'];
 
@@ -123,20 +123,42 @@ const ProductCard = ({ product, onEdit, isAdmin }) => {
                     borderTop: '1px solid #f0f0f0'
                 }}>
                     <span style={{ fontSize: '28px', fontWeight: '900', color: 'var(--text-primary)' }}>{product.price} zł</span>
-                    <button
-                        className="btn-primary"
-                        style={{
-                            borderRadius: '16px',
-                            padding: '12px 24px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            fontSize: '17px',
-                            fontWeight: '800'
-                        }}
-                    >
-                        <Plus size={22} /> Kup Teraz
-                    </button>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}
+                            style={{
+                                width: '48px',
+                                height: '48px',
+                                borderRadius: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'var(--bg-secondary)',
+                                border: '1px solid rgba(0,0,0,0.05)',
+                                color: 'var(--primary-color)',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            title="Dodaj do koszyka"
+                        >
+                            <ShoppingCart size={22} />
+                        </button>
+                        <button
+                            className="btn-primary"
+                            style={{
+                                borderRadius: '14px',
+                                padding: '0 20px',
+                                height: '48px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                fontSize: '16px',
+                                fontWeight: '800'
+                            }}
+                        >
+                            Kup Teraz
+                        </button>
+                    </div>
                 </div>
             </div>
 
