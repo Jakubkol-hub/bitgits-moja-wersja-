@@ -2,7 +2,7 @@ import React from 'react';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
 
-const ProductGrid = ({ products, onEdit, selectedCategory }) => {
+const ProductGrid = ({ products, onEdit, selectedCategory, isAdmin }) => {
     const filteredProducts = selectedCategory
         ? products.filter(p => p.category.toLowerCase().includes(selectedCategory.toLowerCase()) || selectedCategory.toLowerCase().includes(p.category.toLowerCase()))
         : products;
@@ -31,7 +31,7 @@ const ProductGrid = ({ products, onEdit, selectedCategory }) => {
                         </div>
                     ) : (
                         filteredProducts.map((product, index) => (
-                            <ProductCard key={product.id} product={product} onEdit={onEdit} />
+                            <ProductCard key={product.id} product={product} onEdit={onEdit} isAdmin={isAdmin} />
                         ))
                     )}
                 </div>

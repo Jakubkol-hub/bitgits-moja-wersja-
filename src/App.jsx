@@ -24,6 +24,7 @@ const App = () => {
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [productToEdit, setProductToEdit] = useState(null);
   const [primaryColor, setPrimaryColor] = useState('#D35400');
@@ -130,6 +131,7 @@ const App = () => {
         products={products}
         onEdit={handleOpenEdit}
         selectedCategory={formatCategoryName(categoryPath)}
+        isAdmin={isAdminLoggedIn}
       />
     );
   };
@@ -157,6 +159,7 @@ const App = () => {
             <ProductGrid
               products={products}
               onEdit={handleOpenEdit}
+              isAdmin={isAdminLoggedIn}
             />
           </>
         } />
@@ -167,7 +170,7 @@ const App = () => {
         <Route path="/dostawa" element={<Dostawa />} />
         <Route path="/metody-platnosci" element={<MetodyPlatnosci />} />
         <Route path="/zwroty-i-wymiany" element={<ZwrotyIWymiany />} />
-        <Route path="/oferta" element={<ProductGrid products={products} onEdit={handleOpenEdit} />} />
+        <Route path="/oferta" element={<ProductGrid products={products} onEdit={handleOpenEdit} isAdmin={isAdminLoggedIn} />} />
         <Route path="/prezenty" element={<PagePlaceholder title="Prezenty" />} />
         <Route path="/blog" element={<PagePlaceholder title="Nasz Blog" />} />
         <Route path="/oferta/:categoryPath" element={<CategoryView />} />
@@ -184,6 +187,8 @@ const App = () => {
         onUpdateColor={handleUpdateColor}
         orders={orders}
         onUpdateOrder={handleUpdateOrder}
+        isLoggedIn={isAdminLoggedIn}
+        onLogin={setIsAdminLoggedIn}
       />
 
       <EditPanel

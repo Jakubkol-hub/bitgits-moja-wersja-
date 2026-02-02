@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
 
-const ProductCard = ({ product, onEdit }) => {
+const ProductCard = ({ product, onEdit, isAdmin }) => {
     const [currentImg, setCurrentImg] = useState(0);
     const images = product.images && product.images.length > 0 ? product.images : ['https://via.placeholder.com/400'];
 
@@ -140,26 +140,28 @@ const ProductCard = ({ product, onEdit }) => {
                 </div>
             </div>
 
-            {/* Admin/Edit Options - Always visible for clarity */}
-            <button
-                onClick={(e) => { e.stopPropagation(); onEdit(product); }}
-                style={{
-                    position: 'absolute',
-                    top: '32px',
-                    right: '32px',
-                    background: 'var(--bg-primary)',
-                    padding: '8px 16px',
-                    borderRadius: '50px',
-                    fontSize: '14px',
-                    fontWeight: '800',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
-                    border: '1.5px solid var(--primary-color)',
-                    color: 'var(--primary-color)',
-                    zIndex: 2
-                }}
-            >
-                Edytuj
-            </button>
+            {/* Admin/Edit Options - Only visible for admin */}
+            {isAdmin && (
+                <button
+                    onClick={(e) => { e.stopPropagation(); onEdit(product); }}
+                    style={{
+                        position: 'absolute',
+                        top: '32px',
+                        right: '32px',
+                        background: 'var(--bg-primary)',
+                        padding: '8px 16px',
+                        borderRadius: '50px',
+                        fontSize: '14px',
+                        fontWeight: '800',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+                        border: '1.5px solid var(--primary-color)',
+                        color: 'var(--primary-color)',
+                        zIndex: 2
+                    }}
+                >
+                    Edytuj
+                </button>
+            )}
         </motion.div>
     );
 };

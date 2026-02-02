@@ -32,10 +32,11 @@ const CATEGORIES = [
 const AdminPanel = (props) => {
     const {
         isOpen, onClose, products, onAdd, onUpdate, onDelete,
-        primaryColor, onUpdateColor, orders, onUpdateOrder
+        primaryColor, onUpdateColor, orders, onUpdateOrder,
+        isLoggedIn, onLogin // Added props
     } = props;
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false); // Removed local state
     const [loginForm, setLoginForm] = useState({ username: '', password: '' });
     const [loginError, setLoginError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -66,7 +67,7 @@ const AdminPanel = (props) => {
     const handleLogin = (e) => {
         e.preventDefault();
         if (loginForm.username === 'g' && loginForm.password === 'g') {
-            setIsLoggedIn(true);
+            onLogin(true); // Use prop
             setLoginError('');
         } else {
             setLoginError('Nieprawidłowy login lub hasło.');
@@ -74,7 +75,7 @@ const AdminPanel = (props) => {
     };
 
     const handleLogout = () => {
-        setIsLoggedIn(false);
+        onLogin(false); // Use prop
         setLoginForm({ username: '', password: '' });
     };
 
