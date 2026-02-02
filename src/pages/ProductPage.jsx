@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingCart, ArrowLeft, Check, Star, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Star, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ProductPage = ({ products, onAddToCart }) => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [product, setProduct] = useState(null);
     const [activeImage, setActiveImage] = useState(0);
 
+    const product = products.find(p => p.id === parseInt(id) || p.id === id);
+
     useEffect(() => {
-        const found = products.find(p => p.id === parseInt(id) || p.id === id);
-        if (found) {
-            setProduct(found);
+        if (product) {
             window.scrollTo(0, 0);
-        } else {
-            // Handle not found
         }
-    }, [id, products]);
+    }, [id]);
 
     if (!product) return <div style={{ padding: '100px', textAlign: 'center' }}>Ładowanie...</div>;
 
