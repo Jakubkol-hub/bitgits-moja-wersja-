@@ -45,8 +45,8 @@ const ProductGrid = ({ products, onEdit, selectedCategory, isAdmin, onAddToCart 
         }
         @media (max-width: 600px) {
           .grid-container {
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr; /* Force single column */
+            gap: 24px;
           }
         }
       `}</style>

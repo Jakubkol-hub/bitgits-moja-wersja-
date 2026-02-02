@@ -83,87 +83,15 @@ const Navbar = ({ onOpenAdmin, onOpenUser, onOpenSearch, onOpenCart }) => {
           }}
         >
           <Link to="/o-nas" className="nav-link">O Nas</Link>
-          <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}
-            onMouseEnter={() => setMobileMenuOpen(true)}
-            onMouseLeave={() => setMobileMenuOpen(false)}>
-            <button className="nav-link" style={{ border: 'none', background: 'none', cursor: 'pointer' }}>Oferta</button>
-            <AnimatePresence>
-              {mobileMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '900px',
-                    background: '#fff',
-                    borderRadius: '32px',
-                    boxShadow: '0 25px 60px rgba(0,0,0,0.18)',
-                    padding: '48px',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: '40px',
-                    zIndex: 100,
-                    border: '1.5px solid #f2f2f2',
-                    marginTop: '16px'
-                  }}
-                >
-                  <div>
-                    <h4 className="mega-title">SŁODYCZE</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/owoce-w-czekoladzie">Owoce w czekoladzie</Link>
-                      <Link to="/oferta/orzechy-w-czekoladzie">Orzechy w czekoladzie</Link>
-                      <Link to="/oferta/inne-czekoladowe">Inne czekoladowe</Link>
-                      <Link to="/oferta/czekolada-do-picia">Czekolada do picia</Link>
-                    </ul>
-                    <h4 className="mega-title" style={{ marginTop: '24px' }}>OWOCE</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/owoce-liofilizowane">Owoce liofilizowane</Link>
-                      <Link to="/oferta/owoce-suszone">Owoce suszone</Link>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="mega-title">HERBATY</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/herbaty-owocowe">Herbaty owocowe</Link>
-                      <Link to="/oferta/herbaty-zielone">Herbaty zielone</Link>
-                      <Link to="/oferta/herbaty-czarne">Herbaty czarne</Link>
-                      <Link to="/oferta/herbaty-ziolowe">Herbaty ziołowe</Link>
-                      <Link to="/oferta/herbaty-kwitnace">Herbaty kwitnące</Link>
-                      <Link to="/oferta/herbaty-inne">Herbaty inne</Link>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="mega-title">PRZEKĄSKI</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/orzechy-ziarna-pestki">Orzechy, ziarna, pestki</Link>
-                      <Link to="/oferta/przekaski-smakowe">Przekąski smakowe</Link>
-                    </ul>
-                    <h4 className="mega-title" style={{ marginTop: '24px' }}>KWIATY JADALNE</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/kwiaty-suszone">Kwiaty suszone</Link>
-                      <Link to="/oferta/mieszanki-kwiatowe">Mieszanki kwiatowe</Link>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="mega-title">NA PREZENT</h4>
-                    <ul className="mega-list">
-                      <Link to="/oferta/zestawy-upominkowe">Zestawy upominkowe</Link>
-                      <Link to="/oferta/akcesoria">Akcesoria</Link>
-                      <Link to="/oferta/pakowanie-na-prezent">Pakowanie na prezent</Link>
-                    </ul>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
+            <Link to="/oferta" className="nav-link">Oferta</Link>
           </div>
           <Link to="/prezenty" className="nav-link">Prezenty</Link>
           <Link to="/blog" className="nav-link">Blog</Link>
           <button onClick={onOpenAdmin} className="admin-btn">Panel Admina</button>
         </motion.div>
+
+
 
         {/* Action Icons Pill */}
         <motion.div
@@ -198,6 +126,38 @@ const Navbar = ({ onOpenAdmin, onOpenUser, onOpenSearch, onOpenCart }) => {
         </motion.div>
 
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              position: 'absolute',
+              top: '100px',
+              left: '20px',
+              right: '20px',
+              background: '#fff',
+              borderRadius: '24px',
+              padding: '32px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              border: '1px solid #eee',
+              zIndex: 999
+            }}
+          >
+            <Link to="/o-nas" className="nav-link" onClick={() => setMobileMenuOpen(false)}>O Nas</Link>
+            <Link to="/oferta" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Oferta</Link>
+            <Link to="/prezenty" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Prezenty</Link>
+            <Link to="/blog" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+            <button onClick={() => { onOpenAdmin(); setMobileMenuOpen(false); }} className="admin-btn" style={{ width: 'fit-content' }}>Panel Admina</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style jsx>{`
         .nav-link {
@@ -257,7 +217,7 @@ const Navbar = ({ onOpenAdmin, onOpenUser, onOpenSearch, onOpenCart }) => {
           .mobile-toggle { display: block !important; cursor: pointer; }
         }
       `}</style>
-    </nav>
+    </nav >
   );
 };
 
